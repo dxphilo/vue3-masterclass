@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import data from "@/data";
 import { findById, upsert } from "@/helpers";
+
 const store = createStore({
   state: {
     ...data,
@@ -34,8 +35,8 @@ const store = createStore({
       (post.publishedAt = Math.floor(Date.now() / 1000)),
         commit("setPost", { post });
       commit("appendPostToThread", {
-        postId: post.id,
-        threadId: post.threadId,
+        childId: post.id,
+        parentId: post.threadId,
       });
     },
     updateUser({ commit }, user) {
@@ -72,21 +73,25 @@ const store = createStore({
       const userIndex = findById(state.users, userId);
       state.users[userIndex] = user;
     },
-    appendPostToThread(state, { postId, threadId }) {
-      const thread = findById(state.threads, threadId);
-      thread.posts = thread.posts || [];
-      thread.posts.push(postId);
-    },
-    appendThreadToForum(state, { forumId, threadId }) {
-      const forum = findById(state.forums, forumId);
-      forum.threads = forum.threads || [];
-      forum.threads.push(threadId);
-    },
-    appendThreadToUser(state, { userId, threadId }) {
-      const user = findById(state.users, userId);
-      user.threads = user.threads || [];
-      user.threads.push(threadId);
-    },
+    appendPostToThread: appendChildToParentMutation({
+      parent: "threads",
+      child: "posts",
+    }),
+    appendThreadToForum: appendChildToParentMutation({
+      parent: "forums",
+      child: "threads",
+    }),
+    appendThreadToUser: appendChildToParentMutation({
+      parent: "users",
+      child: "threads",
+    }),
   },
 });
+function appendChildToParentMutation({ parent, child }) {
+  return (state, { childId, parentId }) => {
+    const resource = findById(state[parent], parentId);
+    resource[child] = resource[child] || [];
+    resource[child].push(childId);
+  };
+}
 export default store;
