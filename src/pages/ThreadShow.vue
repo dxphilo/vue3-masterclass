@@ -1,8 +1,12 @@
 <template>
   <div>
     <p class="pageshow">Welcome to Page Thread Show</p>
-    <div class="btn">
-      <button @click="goBack">Go back</button>
+    <div>
+      <router-link
+        class="btn"
+        :to="{ name: 'EditThread', params: { id: thread.id } }"
+        >Edit Thread</router-link
+      >
     </div>
 
     <div class="container">
@@ -49,9 +53,6 @@ export default {
       };
       this.$store.dispatch("createPost", post);
     },
-    goBack() {
-      return this.$router.go(-1);
-    },
   },
 };
 </script>
@@ -61,17 +62,19 @@ export default {
 .pageshow {
   text-align: center;
   font-size: 20px;
+  padding: 1rem 0;
 }
-button {
+.btn {
   text-align: center;
   border-radius: 5px;
+  width: 300px;
   background-color: green;
   padding: 10px 30px;
-  color: white;
+  color: rgb(227, 227, 227);
+  margin: auto;
 }
-button:hover {
+.btn:hover {
   background-color: rgb(13, 148, 13);
-  color: white;
 }
 .btn {
   display: flex;

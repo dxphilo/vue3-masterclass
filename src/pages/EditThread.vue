@@ -32,12 +32,12 @@ export default {
   },
   methods: {
     async save({ title, text }) {
-      const thread = await this.$store.dispatch("updateThread", {
+      await this.$store.dispatch("updateThread", {
         id: this.id,
         title,
         text,
       });
-      this.$router.push({ name: "Thread", params: { id: thread.id } });
+      this.$router.push({ name: "Thread", params: { id: this.id } });
     },
     cancel() {
       this.$router.go(-1);
