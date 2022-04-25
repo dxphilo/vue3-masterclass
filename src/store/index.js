@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import data from "@/data";
-import { findById } from "@/helpers";
+import { findById, upsert } from "@/helpers";
 const store = createStore({
   state: {
     ...data,
@@ -63,20 +63,10 @@ const store = createStore({
   },
   mutations: {
     setPost(state, { post }) {
-      const index = state.posts.findIndex((n) => n.id === post.id);
-      if (post.id && index !== -1) {
-        state.posts[index] = post;
-      } else {
-        state.posts.push(post);
-      }
+      upsert(state.posts, post);
     },
     setThread(state, { thread }) {
-      const threadIndex = state.threads.findIndex((t) => t.id === thread.id);
-      if (thread.id && threadIndex !== -1) {
-        state.threads[threadIndex] = thread;
-      } else {
-        state.threads.push(thread);
-      }
+      upsert(state.threads, thread);
     },
     setUser(state, { user, userId }) {
       const userIndex = findById(state.users, userId);
