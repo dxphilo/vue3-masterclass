@@ -38,6 +38,7 @@
   </div>
 </template>
 <script>
+import { findById } from "@/helpers";
 export default {
   props: {
     forumId: {
@@ -53,7 +54,7 @@ export default {
   },
   computed: {
     forum() {
-      return this.$store.state.forums.find((f) => f.id === this.forumId);
+      return findById(this.$store.state.forums, this.forumId);
     },
   },
   methods: {

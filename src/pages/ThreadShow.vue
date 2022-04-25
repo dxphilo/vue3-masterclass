@@ -22,6 +22,7 @@
 <script>
 import PostList from "@/components/PostList.vue";
 import ComentEditor from "@/components/ComentEditor.vue";
+import { findById } from "@/helpers";
 export default {
   name: "ThreadShow",
   components: { PostList, ComentEditor },
@@ -39,7 +40,7 @@ export default {
       return this.$store.state.posts;
     },
     thread() {
-      return this.threads.find((thread) => thread.id == this.$route.params.id);
+      return findById(this.threads, this.$route.params.id);
     },
     threadPosts() {
       return this.posts.filter((p) => p.threadId === this.id);

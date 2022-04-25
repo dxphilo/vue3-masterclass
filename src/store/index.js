@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import data from "@/data";
+import { findById } from "@/helpers";
 const store = createStore({
   state: {
     ...data,
@@ -7,7 +8,7 @@ const store = createStore({
   },
   getters: {
     authUser: (state) => {
-      const user = state.users.find((u) => u.id === state.authId);
+      const user = findById(state.users, state.authId);
       if (!user) return null;
       return {
         ...user,
@@ -53,7 +54,7 @@ const store = createStore({
     },
     async updateThread({ commit, state }, { title, text, id }) {
       const thread = state.threads.find((t) => t.id === id);
-      const post = state.posts.find((p) => p.id === thread.posts[0]);
+      const post = findById(state.posts, thread.posts[0]);
       const newThread = { ...thread, title };
       const newPost = { ...post, text };
       commit("setThread", { thread: newThread });
@@ -78,21 +79,21 @@ const store = createStore({
       }
     },
     setUser(state, { user, userId }) {
-      const userIndex = state.users.find((u) => u.id === userId);
+      const userIndex = findById(state.users, userId);
       state.users[userIndex] = user;
     },
     appendPostToThread(state, { postId, threadId }) {
-      const thread = state.threads.find((t) => t.id === threadId);
+      const thread = findById(state.threads, threadId);
       thread.posts = thread.posts || [];
       thread.posts.push(postId);
     },
     appendThreadToForum(state, { forumId, threadId }) {
-      const forum = state.forums.find((t) => t.id === forumId);
+      const forum = findById(state.forums, forumId);
       forum.threads = forum.threads || [];
       forum.threads.push(threadId);
     },
     appendThreadToUser(state, { userId, threadId }) {
-      const user = state.users.find((t) => t.id === userId);
+      const user = findById(state.users, userId);
       user.threads = user.threads || [];
       user.threads.push(threadId);
     },

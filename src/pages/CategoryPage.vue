@@ -7,6 +7,7 @@
 
 <script>
 import ForumList from "@/components/ForumList.vue";
+import { findById } from "@/helpers";
 export default {
   components: { ForumList },
   name: "CategoryPage",
@@ -18,7 +19,7 @@ export default {
   },
   computed: {
     category() {
-      return this.$store.state.categories.find((c) => c.id === this.id);
+      return findById(this.$store.state.categories, this.id);
     },
     getForumCategory(category) {
       return this.$store.state.forums.filter(
