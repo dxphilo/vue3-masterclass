@@ -13,7 +13,12 @@
             />
           </a>
 
-          <p class="desktop-only text-small">107 posts</p>
+          <p class="desktop-only text-small">
+            {{ userbyId(post.userId).postCount }} Posts
+          </p>
+          <p class="desktop-only text-small">
+            {{ userbyId(post.userId).threadsCount }} Threads
+          </p>
         </div>
 
         <div class="post-content">
@@ -60,7 +65,7 @@ export default {
   },
   methods: {
     userbyId(userId) {
-      return this.users.find((n) => n.id === userId);
+      return this.$store.getters.user(userId);
     },
   },
 };

@@ -8,23 +8,28 @@ const store = createStore({
     authId: "VXjpr2WHa8Ux4Bnggym8QFLdv5C3",
   },
   getters: {
-    authUser: (state) => {
-      const user = findById(state.users, state.authId);
-      if (!user) return null;
-      return {
-        ...user,
-        get posts() {
-          return state.posts.filter((p) => p.userId === user.id);
-        },
-        get postCount() {
-          return this.posts.length;
-        },
-        get threads() {
-          return state.threads.filter((t) => t.threadId === user.id);
-        },
-        get threadsCount() {
-          return this.threads.length;
-        },
+    authUser: (state, getters) => {
+      return getters.user(state.authId);
+    },
+    user: (state) => {
+      return (id) => {
+        const user = findById(state.users, id);
+        if (!user) return null;
+        return {
+          ...user,
+          get posts() {
+            return state.posts.filter((p) => p.userId === user.id);
+          },
+          get postCount() {
+            return this.posts.length;
+          },
+          get threads() {
+            return state.threads.filter((t) => t.threadId === user.id);
+          },
+          get threadsCount() {
+            return this.threads.length;
+          },
+        };
       };
     },
     thread: (state) => {
