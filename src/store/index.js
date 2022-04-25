@@ -27,6 +27,23 @@ const store = createStore({
         },
       };
     },
+    thread: (state) => {
+      return (id) => {
+        const thread = findById(state.threads, id);
+        return {
+          ...thread,
+          get author() {
+            return findById(state.users, thread.userId);
+          },
+          get repliesCount() {
+            return thread.posts.length - 1;
+          },
+          get contributorsCount() {
+            return thread.contributors.length;
+          },
+        };
+      };
+    },
   },
   actions: {
     createPost({ commit, state }, post) {
@@ -87,11 +104,14 @@ const store = createStore({
     }),
   },
 });
+
 function appendChildToParentMutation({ parent, child }) {
   return (state, { childId, parentId }) => {
     const resource = findById(state[parent], parentId);
     resource[child] = resource[child] || [];
-    resource[child].push(childId);
+    if (!resource[child].includes(childId)) {
+      resource[child].push(childId);
+    }
   };
 }
 export default store;

@@ -8,6 +8,16 @@
         >Edit Thread</router-link
       >
     </div>
+    <p class="container">
+      By <a href="#" class="link-unstyled">{{ thread.author.name }}</a
+      >, <AppDate :timestamp="thread.publishedAt" />.
+      <span
+        style="float: right; margin-top: 2px"
+        class="hide-mobile text-faded text-small"
+        >{{ thread.repliesCount }} replies by
+        {{ thread.contributorsCount }} contributors</span
+      >
+    </p>
 
     <div class="container">
       <div class="col-large push-top">
@@ -22,7 +32,6 @@
 <script>
 import PostList from "@/components/PostList.vue";
 import ComentEditor from "@/components/ComentEditor.vue";
-import { findById } from "@/helpers";
 export default {
   name: "ThreadShow",
   components: { PostList, ComentEditor },
@@ -40,7 +49,7 @@ export default {
       return this.$store.state.posts;
     },
     thread() {
-      return findById(this.threads, this.$route.params.id);
+      return this.$store.getters.thread(this.id);
     },
     threadPosts() {
       return this.posts.filter((p) => p.threadId === this.id);
