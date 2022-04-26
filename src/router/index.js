@@ -7,7 +7,6 @@ import ForumPage from "@/pages/ForumPage";
 import CreateThread from "@/pages/CreateThread";
 import Profile from "@/pages/UserProfile";
 import EditThread from "@/pages/EditThread";
-import data from "@/data.json";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
@@ -47,19 +46,6 @@ const routes = [
     name: "Thread",
     component: Thread,
     props: true,
-    beforeEnter(to, from, next) {
-      const threadsData = data.threads.find((n) => n.id === to.params.id);
-      if (threadsData) {
-        return next();
-      } else {
-        next({
-          name: "NotFound",
-          params: { pathMatch: to.path.substring(1).split("/") },
-          query: to.query,
-          hash: to.hash,
-        });
-      }
-    },
   },
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
 ];

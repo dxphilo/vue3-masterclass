@@ -2,7 +2,7 @@
   <div>
     <div class="post-list">
       <div v-for="post in posts" :key="post.id" class="post">
-        <div class="user-info">
+        <div v-if="userbyId(post.userId)" class="user-info">
           <a href="#" class="user-name">{{ userbyId(post.userId).name }}</a>
 
           <a href="#">
