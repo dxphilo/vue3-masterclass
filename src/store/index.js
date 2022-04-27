@@ -81,6 +81,15 @@ const store = createStore({
       console.log("Post ID:", id);
       return dispatch("fetchItem", { resource: "posts", id });
     },
+    fetchThreads({ dispatch }, { ids }) {
+      return dispatch("fetchItems", { resource: "threads", ids });
+    },
+    fetchUsers({ dispatch }, { ids }) {
+      return dispatch("fetchItems", { resource: "users", ids });
+    },
+    fetchPosts({ dispatch }, { ids }) {
+      return dispatch("fetchItems", { resource: "posts", ids });
+    },
     fetchItem({ commit }, { id, resource }) {
       return new Promise((resolve) => {
         firebase
@@ -93,6 +102,11 @@ const store = createStore({
             resolve(item);
           });
       });
+    },
+    fetchItems({ dispatch }, { ids, resource }) {
+      return Promise.all(
+        ids.map((id) => dispatch("fetchItem", { id, resource }))
+      );
     },
     async createThread({ commit, state, dispatch }, { text, title, forumId }) {
       const id = "john" + Math.random();
