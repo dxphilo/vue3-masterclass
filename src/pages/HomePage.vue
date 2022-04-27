@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
+import { useStore, mapActions } from "vuex";
 import { computed } from "vue";
 import CategoryListItem from "@/components/CategoryListItem";
 export default {
@@ -24,11 +24,13 @@ export default {
       categories,
     };
   },
-  async beforeCreate() {
-    const categories = await this.$store.dispatch("fetchAllCategories");
+  methods: {
+    ...mapActions(["fetchAllCategories", "fetchForums"]),
+  },
+  async created() {
+    const categories = await this.fetchAllCategories();
     const forumIds = categories.map((category) => category.forums).flat();
-    this.$store.dispatch("fetchForums", { ids: forumIds });
-    this.$store.dispatch("fetchAllCategories");
+    this.fetchForums({ ids: forumIds });
   },
 };
 </script>
