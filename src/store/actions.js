@@ -9,7 +9,6 @@ export default {
     post.publishedAt = Math.floor(Date.now() / 1000);
     // store data to firebase database
     const batch = firebase.firestore().batch();
-    batch.add(post);
     const postRef = firebase.firestore().collection("posts").doc();
     const threadRef = firebase
       .firestore()
