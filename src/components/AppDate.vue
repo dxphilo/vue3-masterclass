@@ -14,16 +14,19 @@ export default {
   name: "AppDate",
   props: {
     timestamp: {
-      type: Number,
+      type: [Number, Object],
       required: true,
     },
   },
   computed: {
     diff() {
-      return dayjs.unix(this.timestamp).fromNow();
+      return dayjs.unix(this.normalizedTimestamp).fromNow();
     },
     friendlyDate() {
-      return dayjs.unix(this.timestamp).format("llll");
+      return dayjs.unix(this.normalizedTimestamp).format("llll");
+    },
+    normalizedTimestamp() {
+      return this.timestamp?.seconds || this.timestamp;
     },
   },
 };
