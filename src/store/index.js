@@ -81,8 +81,26 @@ const store = createStore({
       console.log("Post ID:", id);
       return dispatch("fetchItem", { resource: "posts", id });
     },
+    fetchAllCategories({ commit }) {
+      return new Promise((resolve) => {
+        firebase
+          .firestore()
+          .collection("categories")
+          .onSnapshot((querySnapshot) => {
+            const categories = querySnapshot.docs.map((doc) => {
+              const item = { id: doc.id, ...doc.data() };
+              commit("setItem", { resource: "categories", item });
+              return item;
+            });
+            resolve(categories);
+          });
+      });
+    },
     fetchThreads({ dispatch }, { ids }) {
       return dispatch("fetchItems", { resource: "threads", ids });
+    },
+    fetchForums({ dispatch }, { ids }) {
+      return dispatch("fetchItems", { resource: "forums", ids });
     },
     fetchUsers({ dispatch }, { ids }) {
       return dispatch("fetchItems", { resource: "users", ids });

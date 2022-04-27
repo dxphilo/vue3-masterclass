@@ -19,9 +19,16 @@ export default {
     const categories = computed(() => {
       return store.state.categories;
     });
+
     return {
       categories,
     };
+  },
+  async beforeCreate() {
+    const categories = await this.$store.dispatch("fetchAllCategories");
+    const forumIds = categories.map((category) => category.forums).flat();
+    this.$store.dispatch("fetchForums", { ids: forumIds });
+    this.$store.dispatch("fetchAllCategories");
   },
 };
 </script>
