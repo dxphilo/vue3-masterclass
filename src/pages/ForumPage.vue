@@ -13,7 +13,7 @@
         >
       </div>
     </div>
-    <div class="col-full">
+    <div class="col-full push-top">
       <ThreadList :threads="threads" />
     </div>
   </div>
@@ -50,6 +50,8 @@ export default {
     const forum = await this.fetchForum({ id: this.id });
     const threads = await this.fetchThreads({ ids: forum.threads });
     this.fetchUsers({ ids: threads.map((thread) => thread.userId) });
+
+    console.log(this.threads);
   },
 };
 </script>
