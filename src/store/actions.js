@@ -8,18 +8,22 @@ export default {
     post.userId = state.authId;
     post.publishedAt = Math.floor(Date.now() / 1000);
     // store data to firebase database
-    const newPost = await firebase.firestore().collection("posts").add(post);
-    await firebase
+    const batch = firebase.firestore().batch();
+    batch.add(post);
+    const postRef = firebase.firestore().collection("posts").doc();
+    const threadRef = firebase
       .firestore()
       .collection("threads")
-      .doc(post.threadId)
-      .update({
-        posts: firebase.firestore.FieldValue.arrayUnion(newPost.id),
-        contributors: firebase.firestore.FieldValue.arrayUnion(state.authId),
-      });
-    commit("setItem", { resource: "posts", item: { ...post, id: newPost.id } });
+      .doc(post.threadId);
+    batch.set(postRef, post);
+    batch.update(threadRef, {
+      posts: firebase.firestore.FieldValue.arrayUnion(postRef.id),
+      contributors: firebase.firestore.FieldValue.arrayUnion(state.authId),
+    });
+    await batch.commit();
+    commit("setItem", { resource: "posts", item: { ...post, id: postRef.id } });
     commit("appendPostToThread", {
-      childId: newPost.id,
+      childId: postRef.id,
       parentId: post.threadId,
     });
     commit("appendContributorToThread", {
