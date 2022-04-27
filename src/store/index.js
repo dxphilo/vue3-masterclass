@@ -40,6 +40,7 @@ const store = createStore({
     thread: (state) => {
       return (id) => {
         const thread = findById(state.threads, id);
+        if (!thread) return {};
         return {
           ...thread,
           get author() {
@@ -68,6 +69,9 @@ const store = createStore({
     },
     updateUser({ commit }, user) {
       commit("setItem", { resource: "users", item: user });
+    },
+    fetchForum({ dispatch }, { id }) {
+      return dispatch("fetchItem", { resource: "forums", id });
     },
     fetchThread({ dispatch }, { id }) {
       console.log("Thread ID:", id);

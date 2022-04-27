@@ -1,5 +1,5 @@
 <template>
-  <div class="forum">
+  <div v-if="forum" class="forum">
     <div class="col-full push-top">
       <div class="forum-header">
         <div class="forum-details">
@@ -36,10 +36,22 @@ export default {
       return findById(this.$store.state.forums, this.id);
     },
     threads() {
+      if (!this.forum) return [];
       return this.forum.threads.map((threadId) =>
         this.$store.getters.thread(threadId)
       );
     },
+  },
+  async created() {
+    const forum = await this.$store.dispatch("fetchForum", {
+      id: this.id,
+    });
+    const threads = await this.$store.dispatch("fetchThreads", {
+      id: forum.threads,
+    });
+    this.$store.dispatch("fetchUsers", {
+      ids: threads.map((thread) => thread.userId),
+    });
   },
 };
 </script>
