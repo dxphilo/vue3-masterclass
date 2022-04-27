@@ -83,9 +83,10 @@ export default {
         });
     });
   },
-  fetchItems({ dispatch }, { ids, resource }) {
+  fetchItems({ dispatch }, { ids, resource, onSnapshot = null }) {
+    ids = ids || [];
     return Promise.all(
-      ids.map((id) => dispatch("fetchItem", { id, resource }))
+      ids.map((id) => dispatch("fetchItem", { id, resource, onSnapshot }))
     );
   },
   async createThread({ commit, state, dispatch }, { text, title, forumId }) {

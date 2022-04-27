@@ -2,9 +2,7 @@
   <div>
     <p class="pageshow">Welcome to Page Thread Show</p>
     <div>
-      <router-link
-        class="btn"
-        :to="{ name: 'EditThread', params: { id: thread.id } }"
+      <router-link class="btn" :to="{ name: 'EditThread', id: this.id }"
         >Edit Thread</router-link
       >
     </div>
@@ -67,9 +65,10 @@ export default {
     },
   },
   async created() {
+    console.log(this.threadPosts);
     // fetch the thread
     const thread = await this.fetchThread({ id: this.id });
-    this.fetchUser({
+    this.fetchUsers({
       id: thread.userId,
     });
     const posts = await this.fetchPosts({
