@@ -70,6 +70,9 @@ const store = createStore({
     updateUser({ commit }, user) {
       commit("setItem", { resource: "users", item: user });
     },
+    fetchCategory({ dispatch }, { id }) {
+      return dispatch("fetchItem", { resource: "categories", id });
+    },
     fetchForum({ dispatch }, { id }) {
       return dispatch("fetchItem", { resource: "forums", id });
     },
@@ -102,6 +105,12 @@ const store = createStore({
     },
     fetchThreads({ dispatch }, { ids }) {
       return dispatch("fetchItems", { resource: "threads", ids });
+    },
+    fetchCategories({ dispatch }, { ids }) {
+      return dispatch("fetchItems", {
+        resource: "categories",
+        ids,
+      });
     },
     fetchForums({ dispatch }, { ids }) {
       return dispatch("fetchItems", { resource: "forums", ids });

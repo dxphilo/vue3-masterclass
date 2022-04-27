@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ForumList from "./ForumList.vue";
+import ForumList from "@/components/ForumList.vue";
 export default {
   name: "CategoryListItem",
   components: { ForumList },

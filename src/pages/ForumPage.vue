@@ -43,11 +43,9 @@ export default {
     },
   },
   async created() {
-    const forum = await this.$store.dispatch("fetchForum", {
-      id: this.id,
-    });
+    const forum = await this.$store.dispatch("fetchForum", { id: this.id });
     const threads = await this.$store.dispatch("fetchThreads", {
-      id: forum.threads,
+      ids: forum.threads,
     });
     this.$store.dispatch("fetchUsers", {
       ids: threads.map((thread) => thread.userId),
