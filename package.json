@@ -6,7 +6,8 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "format": "prettier .  --write"
+    "format": "prettier .  --write",
+    "mig:db": "firebase firestore:delete --all-collections -f && node ./firestoreimport.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -15,7 +16,10 @@
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "core-js": "^3.8.3",
     "firebase": "^9.6.6",
+    "firebase-tools": "^10.7.1",
     "firestore-export-import": "^0.17.0",
+    "global": "^4.4.0",
+    "nprogress": "^0.2.0",
     "vue": "^3.2.13",
     "vue-router": "4",
     "vuex": "^4.0.2"

@@ -1,21 +1,22 @@
 <template>
   <TheHeader />
   <div>
-    <router-view v-show="showPage" @ready="showPage = true" />
-    <div v-show="!showPage" class="push-top text-center">
-      <h3>Loading...</h3>
-    </div>
+    <router-view v-show="showPage" @ready="onPageReady" />
+    <AppSpinner v-show="!showPage" />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import TheHeader from "./components/TheHeader.vue";
+import TheHeader from "@/components/TheHeader.vue";
+import AppSpinner from "@/components/AppDate.vue";
+import NProgress from "nprogress";
 
 export default {
   name: "App",
   components: {
     TheHeader,
+    AppSpinner,
   },
   data() {
     return {
@@ -24,11 +25,20 @@ export default {
   },
   methods: {
     ...mapActions(["fetchAuthUser"]),
+    onPageReady() {
+      this.showPage = true;
+    },
   },
-  async created() {
-    await this.fetchAuthUser();
+  created() {
+    this.fetchAuthUser();
+    NProgress.configure({
+      speed: 200,
+      showSpinner: false,
+    });
     this.$router.beforeEach(() => {
       this.showPage = false;
+      NProgress.start();
+      NProgress.done();
     });
   },
 };
@@ -36,4 +46,8 @@ export default {
 
 <style>
 @import "assets/style.css";
+@import "~nprogress/nprogress.css";
+#nprogress .bar {
+  background: #57ad8d !important;
+}
 </style>
