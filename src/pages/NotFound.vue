@@ -9,6 +9,9 @@
 
 <script>
 export default {
+  created() {
+    this.$emit("ready");
+  },
   methods: {
     goBack() {
       return this.$router.go(-1);

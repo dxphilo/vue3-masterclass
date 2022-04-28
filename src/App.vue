@@ -1,7 +1,10 @@
 <template>
   <TheHeader />
   <div>
-    <router-view />
+    <router-view v-show="showPage" @ready="showPage = true" />
+    <div v-show="!showPage" class="push-top text-center">
+      <h3>Loading...</h3>
+    </div>
   </div>
 </template>
 
@@ -14,11 +17,19 @@ export default {
   components: {
     TheHeader,
   },
+  data() {
+    return {
+      showPage: false,
+    };
+  },
   methods: {
     ...mapActions(["fetchAuthUser"]),
   },
-  created() {
-    this.fetchAuthUser();
+  async created() {
+    await this.fetchAuthUser();
+    this.$router.beforeEach(() => {
+      this.showPage = false;
+    });
   },
 };
 </script>
