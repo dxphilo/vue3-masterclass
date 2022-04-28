@@ -39,12 +39,8 @@ export default {
   },
   methods: {
     submitComment() {
-      if (this.comment.length == 0) {
-        alert("Please write something ...");
-      } else {
-        this.$emit("save-comment", { post: this.postCopy });
-        this.postCopy.text = "";
-      }
+      this.$emit("save-comment", { post: this.postCopy });
+      this.postCopy.text = "";
     },
   },
 };

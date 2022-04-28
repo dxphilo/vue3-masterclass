@@ -23,12 +23,17 @@
 
         <div class="post-content">
           <div class="col-full">
-            <ComentEditor v-if="editing === post.id" :post="post" />
+            <ComentEditor
+              v-if="editing === post.id"
+              :post="post"
+              @save-comment="handleUpdate"
+            />
             <p v-else>
               {{ post.text }}
             </p>
           </div>
           <a
+            v-if="post.userId === $store.state.authId"
             href="#"
             style="margin-left: auto; padding-left: 10px"
             class="link-unstyled"
@@ -39,6 +44,7 @@
           </a>
         </div>
         <div class="post-date text-faded">
+          <div v-if="post.edited?.at" class="edition-info">Edited</div>
           <AppDate :timestamp="post.publishedAt" />
         </div>
       </div>
@@ -51,6 +57,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import ComentEditor from "./ComentEditor.vue";
+import { mapActions } from "vuex";
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 export default {
@@ -72,11 +79,16 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["updatePost"]),
     userbyId(userId) {
       return this.$store.getters.user(userId);
     },
     toggleEditMode(id) {
       this.editing = id === this.editing ? null : id;
+    },
+    handleUpdate(event) {
+      this.updatePost(event.post);
+      this.editing = null;
     },
   },
   components: { ComentEditor },
