@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="asyncDataStatus_ready">
     <p class="pageshow">Welcome to Page Thread Show</p>
     <div>
       <router-link class="btn" :to="{ name: 'EditThread', id: this.id }"
@@ -31,6 +31,7 @@
 import PostList from "@/components/PostList.vue";
 import ComentEditor from "@/components/ComentEditor.vue";
 import { mapActions } from "vuex";
+import asyncDataStatus from "@/mixins/AsyncDataStatus";
 export default {
   name: "ThreadShow",
   components: { PostList, ComentEditor },
@@ -40,6 +41,7 @@ export default {
       type: String,
     },
   },
+  mixins: [asyncDataStatus],
   computed: {
     threads() {
       return this.$store.state.threads;
@@ -75,7 +77,8 @@ export default {
       ids: thread.posts,
     });
     const users = posts.map((post) => post.userId).concat(thread.userId);
-    this.fetchUsers({ ids: users });
+    await this.fetchUsers({ ids: users });
+    this.asyncDataStatus_fetched();
   },
 };
 </script>
