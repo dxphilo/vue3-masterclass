@@ -1,28 +1,28 @@
 <template>
   <div class="">
-    <p class="text-center push-top">Welcome to The Forum</p>
-    <CategoryListItem :categories="categories" />
+    <div v-if="ready">
+      <h1 class="text-center push-top">Welcome to The Forum</h1>
+      <CategoryListItem :categories="categories" />
+    </div>
   </div>
 </template>
 
 <script>
-import { useStore, mapActions } from "vuex";
-import { computed } from "vue";
+import { mapActions } from "vuex";
 import CategoryListItem from "@/components/CategoryListItem";
 export default {
   components: {
     CategoryListItem,
   },
-  setup() {
-    const store = useStore();
-
-    const categories = computed(() => {
-      return store.state.categories;
-    });
-
+  data() {
     return {
-      categories,
+      ready: false,
     };
+  },
+  computed: {
+    categories() {
+      return this.$store.state.categories;
+    },
   },
   methods: {
     ...mapActions(["fetchAllCategories", "fetchForums"]),
@@ -30,7 +30,8 @@ export default {
   async created() {
     const categories = await this.fetchAllCategories();
     const forumIds = categories.map((category) => category.forums).flat();
-    this.fetchForums({ ids: forumIds });
+    await this.fetchForums({ ids: forumIds });
+    this.ready = true;
   },
 };
 </script>
