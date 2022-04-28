@@ -22,8 +22,9 @@
         </div>
 
         <div class="post-content">
-          <div>
-            <p>
+          <div class="col-full">
+            <ComentEditor v-if="editing === post.id" :post="post" />
+            <p v-else>
               {{ post.text }}
             </p>
           </div>
@@ -32,6 +33,7 @@
             style="margin-left: auto; padding-left: 10px"
             class="link-unstyled"
             title="Make a change"
+            @click.prevent="toggleEditMode(post.id)"
           >
             <faIcon icon="pencil-alt" />
           </a>
@@ -48,6 +50,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import ComentEditor from "./ComentEditor.vue";
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 export default {
@@ -58,6 +61,11 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      editing: null,
+    };
+  },
   computed: {
     users() {
       return this.$store.state.users;
@@ -67,7 +75,11 @@ export default {
     userbyId(userId) {
       return this.$store.getters.user(userId);
     },
+    toggleEditMode(id) {
+      this.editing = id === this.editing ? null : id;
+    },
   },
+  components: { ComentEditor },
 };
 </script>
 

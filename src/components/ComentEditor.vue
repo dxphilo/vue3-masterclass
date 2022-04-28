@@ -4,7 +4,7 @@
       <form @submit.prevent="submitComment">
         <div class="form-group">
           <textarea
-            v-model="comment"
+            v-model="postCopy.text"
             name="commentarea"
             id=""
             cols="30"
@@ -13,7 +13,9 @@
             placeholder="Enter your coment here ..."
           ></textarea>
           <div class="form-actions">
-            <button type="submit">Submit Coment</button>
+            <button type="submit">
+              {{ post.id ? "Update Post" : "Submit Post" }}
+            </button>
           </div>
         </div>
       </form>
@@ -24,9 +26,15 @@
 <script>
 export default {
   name: "ComentEditor",
+  props: {
+    post: {
+      type: Object,
+      default: () => ({ text: null }),
+    },
+  },
   data() {
     return {
-      comment: "",
+      postCopy: { ...this.post },
     };
   },
   methods: {
@@ -34,11 +42,8 @@ export default {
       if (this.comment.length == 0) {
         alert("Please write something ...");
       } else {
-        const post = {
-          text: this.comment,
-        };
-        this.comment = "";
-        this.$emit("save-comment", { post });
+        this.$emit("save-comment", { post: this.postCopy });
+        this.postCopy.text = "";
       }
     },
   },
