@@ -4,7 +4,6 @@ import "firebase/compat/firestore";
 
 export default {
   async createPost({ commit, state }, post) {
-    post.id = "john" + Math.random();
     post.userId = state.authId;
     post.publishedAt = firebase.firestore.FieldValue.serverTimestamp();
     // store data to firebase database
@@ -14,10 +13,14 @@ export default {
       .firestore()
       .collection("threads")
       .doc(post.threadId);
+    const userRef = firebase.firestore().collection("users").doc(state.authId);
     batch.set(postRef, post);
     batch.update(threadRef, {
       posts: firebase.firestore.FieldValue.arrayUnion(postRef.id),
       contributors: firebase.firestore.FieldValue.arrayUnion(state.authId),
+    });
+    batch.update(userRef, {
+      postCount: firebase.firestore.FieldValue.increment(1),
     });
     await batch.commit();
     const newPost = await postRef.get();
