@@ -7,6 +7,7 @@ import ForumPage from "@/pages/ForumPage";
 import CreateThread from "@/pages/CreateThread";
 import Profile from "@/pages/UserProfile";
 import EditThread from "@/pages/EditThread";
+import store from "@/store/index";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
@@ -49,7 +50,7 @@ const routes = [
   },
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
 ];
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
   scrollBehavior(to) {
     // set smooth scroll for specific routes i.e profile
@@ -60,3 +61,8 @@ export default createRouter({
   },
   routes,
 });
+router.beforeEach(() => {
+  store.dispatch("unsubscribeAllSnapshots");
+});
+
+export default router;

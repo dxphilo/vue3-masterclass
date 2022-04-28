@@ -82,15 +82,16 @@ export default {
     dispatch("fetchItems", { resource: "posts", ids }),
   fetchItem({ commit }, { id, resource }) {
     return new Promise((resolve) => {
-      firebase
+      const unsubscribe = firebase
         .firestore()
         .collection(resource)
         .doc(id)
         .onSnapshot((doc) => {
           const item = { ...doc.data(), id: doc.id };
-          commit("setItem", { resource, id, item: item });
+          commit("setItem", { resource, item });
           resolve(item);
         });
+      commit("appendUnsubscribe", { unsubscribe });
     });
   },
   fetchItems({ dispatch }, { ids, resource, onSnapshot = null }) {
@@ -98,6 +99,10 @@ export default {
     return Promise.all(
       ids.map((id) => dispatch("fetchItem", { id, resource, onSnapshot }))
     );
+  },
+  async unsubscribeAllSnapshots({ state, commit }) {
+    state.unsubscribes.forEach((unsubscribe) => unsubscribe());
+    commit("clearAllUnsubscribes");
   },
   async updatePost({ commit, state }, { text, id }) {
     const post = {
