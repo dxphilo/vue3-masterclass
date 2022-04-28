@@ -40,7 +40,7 @@ export default {
         title,
         text,
       });
-      this.$router.push({ name: "Thread", params: { id: this.id } });
+      this.$router.go(-1);
     },
     cancel() {
       this.$router.go(-1);
