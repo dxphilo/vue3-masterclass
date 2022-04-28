@@ -7,9 +7,13 @@ import router from "@/router";
 import firebase from "firebase/compat/app";
 import firebaseConfig from "@/config/firebase.js";
 
+// font awesome icons
+import FontAwesome from "@/plugins/FontAwesome";
+
 firebase.initializeApp(firebaseConfig);
 const forumApp = createApp(App);
 forumApp.use(router);
 forumApp.use(store);
+forumApp.use(FontAwesome);
 forumApp.component("AppDate", AppDate);
 forumApp.mount("#app");
