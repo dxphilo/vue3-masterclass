@@ -1,6 +1,7 @@
 import { docToResource, findById } from "@/helpers";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import "firebase/compat/auth";
 
 export default {
   async createPost({ commit, state }, post) {
@@ -39,6 +40,32 @@ export default {
   },
   updateUser({ commit }, user) {
     commit("setItem", { resource: "users", item: user });
+  },
+  async registerUserWithEmailAndPassword(
+    { dispatch },
+    { avatar = null, email, name, username, password }
+  ) {
+    const result = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password);
+    dispatch("createUser", {
+      id: result.user.uid,
+      email,
+      name,
+      username,
+      avatar,
+    });
+  },
+  async createUser({ commit }, { id, name, username, email, avatar = null }) {
+    const registeredAt = firebase.firestore.FieldValue.serverTimestamp();
+    const usernameLower = username.toLowerCase();
+    email = email.toLowerCase();
+    const user = { id, avatar, email, name, usernameLower, registeredAt };
+    const userRef = await firebase.firestore().collection("users").doc(id);
+    userRef.set(user);
+    const newUser = await userRef.get();
+    commit("setItem", { resolve: "users", item: newUser });
+    return docToResource(newUser);
   },
   fetchCategory: ({ dispatch }, { id }) =>
     dispatch("fetchItem", { resource: "categories", id }),

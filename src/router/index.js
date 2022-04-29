@@ -7,6 +7,7 @@ import ForumPage from "@/pages/ForumPage";
 import CreateThread from "@/pages/CreateThread";
 import Profile from "@/pages/UserProfile";
 import EditThread from "@/pages/EditThread";
+import Register from "@/pages/UserRegistration";
 import store from "@/store/index";
 
 const routes = [
@@ -28,6 +29,11 @@ const routes = [
     name: "Profile",
     component: Profile,
     meta: { toTop: true, smoothScroll: true },
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register,
   },
   {
     path: "/profile/edit",
