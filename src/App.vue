@@ -9,7 +9,7 @@
 <script>
 import { mapActions } from "vuex";
 import TheHeader from "@/components/TheHeader.vue";
-import AppSpinner from "@/components/AppDate.vue";
+import AppSpinner from "@/components/AppSpinner.vue";
 import NProgress from "nprogress";
 
 export default {
