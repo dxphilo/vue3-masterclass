@@ -8,6 +8,7 @@ import CreateThread from "@/pages/CreateThread";
 import Profile from "@/pages/UserProfile";
 import EditThread from "@/pages/EditThread";
 import Register from "@/pages/UserRegistration";
+import SignIn from "@/pages/SignUser";
 import store from "@/store/index";
 
 const routes = [
@@ -40,6 +41,11 @@ const routes = [
     name: "ProfileEdit",
     component: Profile,
     props: { edit: true },
+  },
+  {
+    path: "/signin",
+    name: "SignIn",
+    component: SignIn,
   },
   {
     path: "/category/:id",
