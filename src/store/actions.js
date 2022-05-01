@@ -48,7 +48,7 @@ export default {
     const result = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password);
-    dispatch("createUser", {
+    await dispatch("createUser", {
       id: result.user.uid,
       email,
       name,
@@ -56,15 +56,15 @@ export default {
       avatar,
     });
   },
-  async createUser({ commit }, { id, name, username, email, avatar = null }) {
+  async createUser({ commit }, { id, email, name, username, avatar = null }) {
     const registeredAt = firebase.firestore.FieldValue.serverTimestamp();
     const usernameLower = username.toLowerCase();
     email = email.toLowerCase();
-    const user = { id, avatar, email, name, usernameLower, registeredAt };
+    const user = { avatar, email, name, username, usernameLower, registeredAt };
     const userRef = await firebase.firestore().collection("users").doc(id);
     userRef.set(user);
     const newUser = await userRef.get();
-    commit("setItem", { resolve: "users", item: newUser });
+    commit("setItem", { resource: "users", item: newUser });
     return docToResource(newUser);
   },
   fetchCategory: ({ dispatch }, { id }) =>
@@ -77,8 +77,12 @@ export default {
     dispatch("fetchItem", { resource: "users", id }),
   fetchPost: ({ dispatch }, { id }) =>
     dispatch("fetchItem", { resource: "posts", id }),
-  fetchAuthUser: ({ dispatch, state }) =>
-    dispatch("fetchUser", { id: state.authId }),
+  fetchAuthUser: ({ dispatch, state, commit }) => {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) return;
+    dispatch("fetchItem", { resource: "users", id: state.authId });
+    commit("setAuthId", userId);
+  },
   fetchAllCategories({ commit }) {
     return new Promise((resolve) => {
       firebase

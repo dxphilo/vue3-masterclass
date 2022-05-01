@@ -5,13 +5,7 @@
         <h1 class="text-center">Register</h1>
         <div class="form-group">
           <label for="name">Full Name</label>
-          <input
-            v-model="form.name"
-            id="name"
-            type="text"
-            class="form-input"
-            placeholder="Enter name"
-          />
+          <input v-model="form.name" id="name" type="text" class="form-input" />
         </div>
         <div class="form-group">
           <label for="username">Username</label>
@@ -20,7 +14,6 @@
             id="username"
             type="text"
             class="form-input"
-            placeholder="Enter username"
           />
         </div>
         <div class="form-group">
@@ -30,7 +23,6 @@
             id="email"
             type="email"
             class="form-input"
-            placeholder="Email"
           />
         </div>
         <div class="form-group">
@@ -40,7 +32,6 @@
             id="password"
             type="password"
             class="form-input"
-            placeholder="Enter password"
           />
         </div>
         <div class="form-group">
@@ -50,7 +41,6 @@
             id="avatar"
             type="text"
             class="form-input"
-            placeholder="Enter Avatar"
           />
         </div>
         <div class="form-actions">
