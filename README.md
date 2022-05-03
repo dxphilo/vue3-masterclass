@@ -24,6 +24,12 @@ yarn build
 yarn lint
 ```
 
+### Delete the firebase DB and migrate Fresh Data to Db.
+
+```
+yarn mig:db
+```
+
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
