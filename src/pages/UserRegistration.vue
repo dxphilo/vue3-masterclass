@@ -48,7 +48,7 @@
         </div>
       </form>
       <div class="text-center push-top">
-        <button class="btn-red btn-xsmall">
+        <button class="btn-red btn-xsmall" @click="registerWithGoogle">
           <i class="fa fa-google fa-btn"></i>Sign up with Google
         </button>
       </div>
@@ -71,6 +71,10 @@ export default {
   methods: {
     async register() {
       await this.$store.dispatch("registerUserWithEmailAndPassword", this.form);
+      this.$router.push("/");
+    },
+    async registerWithGoogle() {
+      await this.$store.dispatch("signWithGoogle");
       this.$router.push("/");
     },
   },

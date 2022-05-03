@@ -57,7 +57,27 @@ export default {
     });
   },
   async signInWithEmailAndPassword(context, { email, password }) {
-    return await firebase.auth().signInWithEmailAndPassword(email, password);
+    try {
+      return await firebase.auth().signInWithEmailAndPassword(email, password);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async signWithGoogle({ dispatch }) {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const response = firebase.auth().signInWithPopup(provider);
+    const user = response.user;
+    const userRef = firebase.firestore().collection("users").doc(user.uid);
+    const userDoc = await userRef.get();
+    if (!userDoc.exists) {
+      return dispatch("createUser", {
+        id: user.uid,
+        name: user.displayName,
+        email: user.email,
+        username: user.email,
+        avatar: user.photoURL,
+      });
+    }
   },
   async signOut({ commit }) {
     await firebase.auth().signOut();
