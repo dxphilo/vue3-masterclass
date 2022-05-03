@@ -56,8 +56,8 @@ export default {
       avatar,
     });
   },
-  signInWithEmailAndPassword({ email, password }) {
-    return firebase.auth().signInWithEmailAndPassword(email, password);
+  async signInWithEmailAndPassword(context, { email, password }) {
+    return await firebase.auth().signInWithEmailAndPassword(email, password);
   },
   async signOut({ commit }) {
     await firebase.auth().signOut();

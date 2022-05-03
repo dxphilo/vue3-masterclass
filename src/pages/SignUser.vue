@@ -58,7 +58,8 @@ export default {
     async signIn() {
       try {
         await this.$store.dispatch("signInWithEmailAndPassword", {
-          ...this.form,
+          email: this.form.email,
+          password: this.form.password,
         });
         this.$router.push("/");
       } catch (error) {
