@@ -30,6 +30,9 @@ const routes = [
     name: "Profile",
     component: Profile,
     meta: { toTop: true, smoothScroll: true },
+    beforeEnter() {
+      if (!this.$store.authId) return { name: "Home" };
+    },
   },
   {
     path: "/register",

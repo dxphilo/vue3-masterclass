@@ -2789,6 +2789,14 @@ hr {
 .fa-btn {
   padding-right: 3px;
 }
+.wdmr {
+  width: 60%;
+  margin: 0 auto;
+}
+.wdml {
+  width: 50%;
+  margin: 0 auto;
+}
 
 #app {
   background: #f5f8fe;

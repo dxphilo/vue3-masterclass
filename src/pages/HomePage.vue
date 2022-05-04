@@ -1,7 +1,9 @@
 <template>
   <div v-if="asyncDataStatus_ready">
     <h1 class="text-center push-top">Welcome to The Forum</h1>
-    <CategoryListItem :categories="categories" />
+    <div class="wdmr">
+      <CategoryListItem :categories="categories" />
+    </div>
   </div>
 </template>
 

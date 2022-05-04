@@ -23,7 +23,6 @@
 // import PostList from "@/components/PostList";
 // import UserProfileCard from "@/components/UserProfileCard.vue";
 // import UserProfileEditor from "@/components/UserProfileEditor.vue";
-import store from "@/store";
 
 import { mapGetters } from "vuex";
 export default {
@@ -39,9 +38,6 @@ export default {
   },
   created() {
     this.$emit("ready");
-  },
-  beforeRouteEnter() {
-    if (!store.state.authId) return { name: "Home" };
   },
   beforeRouteUpdate() {},
 };

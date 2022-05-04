@@ -1,21 +1,25 @@
 <template>
   <div v-if="asyncDataStatus_ready" class="col-full">
     <div class="forum">
-      <div class="col-full push-top">
-        <div class="forum-header">
-          <div class="forum-details">
-            <h1>{{ forum.name }}</h1>
-            <p class="text-lead">{{ forum.description }}</p>
+      <div class="wdml">
+        <div class="col-full push-top">
+          <div class="forum-header">
+            <div class="forum-details">
+              <h1>{{ forum.name }}</h1>
+              <p class="text-lead">{{ forum.description }}</p>
+            </div>
+            <router-link
+              :to="{ name: 'createThread', params: { forumId: forum.id } }"
+              class="btn-green btn-small"
+              >Start a thread</router-link
+            >
           </div>
-          <router-link
-            :to="{ name: 'createThread', params: { forumId: forum.id } }"
-            class="btn-green btn-small"
-            >Start a thread</router-link
-          >
         </div>
       </div>
-      <div class="col-full push-top">
-        <ThreadList :threads="threads" />
+      <div class="wdmr">
+        <div class="col-full push-top">
+          <ThreadList :threads="threads" />
+        </div>
       </div>
     </div>
   </div>
