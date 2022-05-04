@@ -3,7 +3,12 @@
     <h1>
       Create new thread in <i>{{ forum.name }}</i>
     </h1>
-    <ThreadEditor @save="save" @cancel="cancel" />
+    <ThreadEditor
+      @save="save"
+      @cancel="cancel"
+      @dirty="formIsDirty = true"
+      @clean="formIsDirty = false"
+    />
   </div>
 </template>
 <script>
@@ -21,8 +26,7 @@ export default {
   },
   data() {
     return {
-      title: "",
-      text: "",
+      formIsDirty: false,
     };
   },
   mixins: [asyncDataStatus],
@@ -42,12 +46,20 @@ export default {
       this.$router.push({ name: "Thread", params: { id: thread.id } });
     },
     cancel() {
-      this.$router.push({ name: "forum", params: { id: this.forumId } });
+      this.$router.go(-1);
     },
   },
   async created() {
     await this.fetchForum({ id: this.forumId });
     this.asyncDataStatus_fetched();
+  },
+  beforeRouteLeave() {
+    if (this.formIsDirty) {
+      const confirmed = window.confirm(
+        "Are you sure you want to leave? Unsaved changes will be lost!"
+      );
+      if (!confirmed) return false;
+    }
   },
 };
 </script>

@@ -9,6 +9,8 @@
         :text="text"
         @save="save"
         @cancel="cancel"
+        @dirty="formIsDirty = true"
+        @clean="formIsDirty = false"
       />
     </div>
   </div>
@@ -25,6 +27,11 @@ export default {
       type: String,
       required: true,
     },
+  },
+  data() {
+    return {
+      formIsDirty: false,
+    };
   },
   mixins: [asyncDataStatus],
   computed: {
@@ -44,16 +51,28 @@ export default {
         title,
         text,
       });
-      this.$router.go(-1);
+      this.$router.push({ name: "Thread", params: { id: this.id } });
     },
     cancel() {
-      this.$router.go(-1);
+      this.$router.push({ name: "Thread", params: { id: this.id } });
     },
   },
   async created() {
     const thread = await this.fetchThread({ id: this.id });
     await this.fetchPost({ id: thread.posts[0] });
     this.asyncDataStatus_fetched();
+  },
+  watcher: {
+    form: {
+      handler() {
+        if (this.form.title !== this.title || this.form.text !== this.text) {
+          this.$emit("dirty");
+        } else {
+          this.$emit("clean");
+        }
+      },
+      deep: true,
+    },
   },
 };
 </script>

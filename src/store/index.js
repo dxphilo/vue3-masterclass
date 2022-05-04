@@ -10,7 +10,7 @@ const store = createStore({
     users: [],
     threads: [],
     posts: [],
-    authId: null,
+    authId: "jUjmgCurRRdzayqbRMO7aTG9X1G2",
     unsubscribes: [],
     authUserUnsubscribe: null,
   },
