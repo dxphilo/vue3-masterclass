@@ -124,6 +124,12 @@ figcaption {
 .forum-list .forum-listing .forum-details ul.subforums.subforums li {
   display: inline;
 }
+.bd {
+  font-weight: bolder;
+  color: black;
+  font-size: 1rem;
+  padding: 0 0.4;
+}
 
 .forum-list
   .forum-listing

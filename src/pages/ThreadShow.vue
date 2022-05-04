@@ -6,14 +6,16 @@
         >Edit Thread</router-link
       >
     </div>
-    <p class="container">
+    <p class="container push-top">
       By <a href="#" class="link-unstyled">{{ thread.author?.name }}</a
-      >, <AppDate :timestamp="thread.publishedAt" />.
+      >, <AppDate :timestamp="thread.publishedAt" />
       <span
-        style="float: right; margin-top: 2px"
+        style="float: right; margin-top: 2px; margin-left: 2px:"
         class="hide-mobile text-faded text-small"
-        >{{ thread.repliesCount }} replies by
-        {{ thread.contributorsCount }} contributors</span
+      >
+        <span class="bd">{{ thread.repliesCount }}</span> replies by
+        <span class="bd">{{ thread.contributorsCount }}</span>
+        contributors</span
       >
     </p>
 

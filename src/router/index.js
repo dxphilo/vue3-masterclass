@@ -26,12 +26,20 @@ const routes = [
     props: true,
   },
   {
+    path: "/logout",
+    name: "logout",
+    async beforeEnter() {
+      await store.dispatch("signOut");
+      return { name: "Home" };
+    },
+  },
+  {
     path: "/profile",
     name: "Profile",
     component: Profile,
     meta: { toTop: true, smoothScroll: true },
     beforeEnter() {
-      if (!this.$store.authId) return { name: "Home" };
+      if (!store.state.authId) return { name: "Home" };
     },
   },
   {

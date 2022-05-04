@@ -39,7 +39,6 @@ export default {
   created() {
     this.$emit("ready");
   },
-  beforeRouteUpdate() {},
 };
 </script>
 
