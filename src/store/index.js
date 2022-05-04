@@ -12,6 +12,7 @@ const store = createStore({
     posts: [],
     authId: null,
     unsubscribes: [],
+    authUserUnsubscribe: null,
   },
   getters,
   actions,
