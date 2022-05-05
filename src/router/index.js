@@ -46,6 +46,7 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
+    meta: { requiresGuest: true },
   },
   {
     path: "/profile/edit",
@@ -58,6 +59,7 @@ const routes = [
     path: "/signin",
     name: "SignIn",
     component: SignIn,
+    meta: { requiresGuest: true },
   },
   {
     path: "/category/:id",
@@ -75,7 +77,7 @@ const routes = [
       await store.dispatch("fetchThread", { id: to.params.id });
       const threadExists = findById(store.state.threads, to.params.id);
       if (threadExists) {
-        return next;
+        return next();
       } else {
         next({
           name: "NotFound",
@@ -103,6 +105,9 @@ router.beforeEach(async (to) => {
   await store.dispatch("initAuthentication");
   store.dispatch("unsubscribeAllSnapshots");
   if (to.meta.requiresAuth && !store.state.authId) {
+    return { name: "SignIn" };
+  }
+  if (to.meta.requiresGuest && store.state.authId) {
     return { name: "Home" };
   }
 });
