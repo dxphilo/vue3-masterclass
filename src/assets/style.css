@@ -128,7 +128,7 @@ figcaption {
   font-weight: bolder;
   color: black;
   font-size: 1rem;
-  padding: 0 0.4;
+  margin-left: 0.5rem;
 }
 
 .forum-list

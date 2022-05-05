@@ -1,14 +1,14 @@
 <template>
   <div v-if="asyncDataStatus_ready">
     <p class="pageshow">Welcome to Page Thread Show</p>
-    <div>
+    <div v-if="thread.userId === authUser?.id">
       <router-link class="btn" :to="{ name: 'EditThread', id: this.id }"
         >Edit Thread</router-link
       >
     </div>
     <p class="container push-top">
       By <a href="#" class="link-unstyled">{{ thread.author?.name }}</a
-      >, <AppDate :timestamp="thread.publishedAt" />
+      >, <AppDate :timestamp="thread.publishedAt" class="bd" />
       <span
         style="float: right; margin-top: 2px; margin-left: 2px:"
         class="hide-mobile text-faded text-small"
@@ -23,7 +23,19 @@
       <div class="col-large push-top">
         <h1>{{ thread.title }}</h1>
         <PostList :posts="threadPosts" />
-        <ComentEditor @save-comment="addPost" />
+        <ComentEditor v-if="authUser" @save-comment="addPost" />
+        <div v-else class="text-center" style="margin-bottom: 50px">
+          <router-link
+            :to="{ name: 'SignIn', query: { redirectTo: $route.path } }"
+            >Sign In</router-link
+          >
+          or
+          <router-link
+            :to="{ name: 'Register', query: { redirectTo: $route.path } }"
+            >Register</router-link
+          >
+          to reply
+        </div>
       </div>
     </div>
   </div>
@@ -32,7 +44,7 @@
 <script>
 import PostList from "@/components/PostList.vue";
 import ComentEditor from "@/components/ComentEditor.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import asyncDataStatus from "@/mixins/AsyncDataStatus";
 export default {
   name: "ThreadShow",
@@ -45,6 +57,7 @@ export default {
   },
   mixins: [asyncDataStatus],
   computed: {
+    ...mapGetters(["authUser"]),
     threads() {
       return this.$store.state.threads;
     },
