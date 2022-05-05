@@ -61,14 +61,18 @@ export default {
           email: this.form.email,
           password: this.form.password,
         });
-        this.$router.push("/");
+        this.successRedirect();
       } catch (error) {
         alert(error.message);
       }
     },
     async signInWithGoogle() {
       await this.store.dispatch("signWithGoogle");
-      this.$router.push("/");
+      this.successRedirect();
+    },
+    successRedirect() {
+      const redirect = this.$route.query.redirectTo || { name: "Home" };
+      this.$router.push(redirect);
     },
   },
   created() {
