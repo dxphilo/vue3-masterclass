@@ -10,6 +10,7 @@ import EditThread from "@/pages/EditThread";
 import Register from "@/pages/UserRegistration";
 import SignIn from "@/pages/SignUser";
 import store from "@/store/index";
+import { findById } from "@/helpers";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
@@ -18,12 +19,14 @@ const routes = [
     name: "createThread",
     component: CreateThread,
     props: true,
+    meta: { requiresAuth: true },
   },
   {
     path: "/thread/:id/edit",
     name: "EditThread",
     component: EditThread,
     props: true,
+    meta: { requiresAuth: true },
   },
   {
     path: "/logout",
@@ -49,6 +52,7 @@ const routes = [
     name: "ProfileEdit",
     component: Profile,
     props: { edit: true },
+    meta: { requiresAuth: true },
   },
   {
     path: "/signin",
@@ -67,6 +71,20 @@ const routes = [
     name: "Thread",
     component: Thread,
     props: true,
+    async beforeEnter(to, from, next) {
+      await store.dispatch("fetchThread", { id: to.params.id });
+      const threadExists = findById(store.state.threads, to.params.id);
+      if (threadExists) {
+        return next;
+      } else {
+        next({
+          name: "NotFound",
+          params: { pathMatch: to.path.substring(1).split("/") },
+          query: to.query,
+          hash: to.hash,
+        });
+      }
+    },
   },
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
 ];
