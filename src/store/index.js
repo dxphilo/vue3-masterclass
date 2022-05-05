@@ -14,6 +14,7 @@ const store = createStore({
     authId: null,
     unsubscribes: [],
     authUserUnsubscribe: null,
+    authObserverUnsubscribe: null,
   },
   getters,
   actions,
