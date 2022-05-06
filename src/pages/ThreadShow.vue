@@ -7,7 +7,7 @@
       >
     </div>
     <p class="container push-top">
-      By <a href="#" class="link-unstyled">{{ thread.author?.name }}</a
+      By <a href="#" class="link-unstyled bd">{{ thread.author?.name }}</a
       >, <AppDate :timestamp="thread.publishedAt" class="bd" />
       <span
         style="float: right; margin-top: 2px; margin-left: 2px:"
@@ -82,7 +82,7 @@ export default {
     },
   },
   async created() {
-    console.log(this.threadPosts);
+    console.log("Created ...");
     // fetch the thread
     const thread = await this.fetchThread({ id: this.id });
     this.fetchUsers({
