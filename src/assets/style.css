@@ -130,7 +130,13 @@ figcaption {
   font-size: 1rem;
   margin-left: 0.5rem;
 }
-
+.cen {
+  padding: 20px 0;
+  display: flex; /* establish flex container */
+  flex-direction: column; /* make main axis vertical */
+  justify-content: center; /* center items vertically, in this case */
+  align-items: center;
+}
 .forum-list
   .forum-listing
   .forum-details

@@ -19,12 +19,14 @@
       <div class="wdmr">
         <div class="col-full push-top">
           <ThreadList :threads="threads" />
-          <v-pagination
-            v-model="page"
-            :pages="totalPages"
-            active-color="#57AD8D"
-            @update:modelValue="updateHandler"
-          />
+          <div class="cen">
+            <Vpagination
+              v-model="page"
+              :pages="totalPages"
+              active-color="#57AD8D"
+              @update:modelValue="updateHandler"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -48,7 +50,7 @@ export default {
   mixins: [asyncDataStatus],
   data() {
     return {
-      page: 1,
+      page: parseInt(this.$route.query.page) || 1,
       perPage: 10,
     };
   },
@@ -87,12 +89,7 @@ export default {
   },
   watch: {
     async page() {
-      const threads = await this.fetchThreadsByPage({
-        ids: this.forum.threads,
-        page: this.page,
-        perPage: this.perPage,
-      });
-      await this.fetchUsers({ ids: threads.map((thread) => thread.userId) });
+      this.$router.push({ query: { page: this.page } });
     },
   },
 };

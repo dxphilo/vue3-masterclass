@@ -1,7 +1,11 @@
 <template>
   <TheHeader />
   <div>
-    <router-view v-show="showPage" @ready="onPageReady" :key="$route.path" />
+    <router-view
+      v-show="showPage"
+      @ready="onPageReady"
+      :key="`${$route.path}${JSON.stringify($route.query)}`"
+    />
     <AppSpinner v-show="!showPage" />
   </div>
 </template>
