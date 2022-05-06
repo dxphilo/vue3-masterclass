@@ -15,6 +15,11 @@
     <nav class="navbar">
       <ul>
         <li v-if="authUser" class="navbar-user">
+          <a
+            href=""
+            @click.prevent="userDropdownOpen = !userDropdownOpen"
+            v-click-outside="(userDropdown = false)"
+          ></a>
           <router-link :to="{ name: 'Profile' }">
             <img
               class="avatar-small"
