@@ -19,6 +19,7 @@
     "firebase-tools": "^10.7.1",
     "firestore-export-import": "^0.17.0",
     "global": "^4.4.0",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "vue": "^3.2.13",
     "vue-router": "4",

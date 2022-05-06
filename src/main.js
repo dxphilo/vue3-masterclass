@@ -10,6 +10,7 @@ import firebaseConfig from "@/config/firebase.js";
 // font awesome icons
 import FontAwesome from "@/plugins/FontAwesome";
 import ClickOutsideDirective from "@/plugins/ClickOutsideDirective";
+import PageScrollDirective from "@/plugins/PageScrollDirective";
 
 firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged((user) => {
@@ -23,5 +24,6 @@ forumApp.use(router);
 forumApp.use(store);
 forumApp.use(FontAwesome);
 forumApp.use(ClickOutsideDirective);
+forumApp.use(PageScrollDirective);
 forumApp.component("AppDate", AppDate);
 forumApp.mount("#app");
