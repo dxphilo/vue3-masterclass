@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     getForumCategory(category) {
-      return this.$store.state.forums.filter(
+      return this.$store.state.forums.items.filter(
         (f) => f.categoryId === category.id
       );
     },

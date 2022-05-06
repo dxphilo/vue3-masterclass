@@ -57,22 +57,24 @@ export default {
   },
   mixins: [asyncDataStatus],
   computed: {
-    ...mapGetters(["authUser"]),
+    ...mapGetters("auth", ["authUser"]),
     threads() {
-      return this.$store.state.threads;
+      return this.$store.state.threads.items;
     },
     posts() {
-      return this.$store.state.posts;
+      return this.$store.state.posts.items;
     },
     thread() {
-      return this.$store.getters.thread(this.id);
+      return this.$store.getters["threads/thread"](this.id);
     },
     threadPosts() {
       return this.posts.filter((p) => p.threadId === this.id);
     },
   },
   methods: {
-    ...mapActions(["createPost", "fetchThread", "fetchPosts", "fetchUsers"]),
+    ...mapActions("threads", ["fetchThread"]),
+    ...mapActions("users", ["fetchUsers"]),
+    ...mapActions("posts", ["fetchPosts", "createPost"]),
     addPost(eventData) {
       const post = {
         ...eventData.post,

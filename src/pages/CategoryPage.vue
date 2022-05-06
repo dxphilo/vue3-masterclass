@@ -22,13 +22,13 @@ export default {
   mixins: [asyncDataStatus],
   computed: {
     category() {
-      return findById(this.$store.state.categories, this.id);
+      return findById(this.$store.state.categories.items, this.id);
     },
   },
   methods: {
     ...mapActions(["fetchCategory", "fetchForums"]),
     getForumsCategory(category) {
-      return this.$store.state.forums.filter(
+      return this.$store.state.forums.items.filter(
         (f) => f.categoryId === category.id
       );
     },

@@ -70,11 +70,14 @@ export default {
   },
   methods: {
     async register() {
-      await this.$store.dispatch("registerUserWithEmailAndPassword", this.form);
+      await this.$store.dispatch(
+        "auth/registerUserWithEmailAndPassword",
+        this.form
+      );
       this.$router.push("/");
     },
     async registerWithGoogle() {
-      await this.$store.dispatch("signWithGoogle");
+      await this.$store.dispatch("auth/signWithGoogle");
       this.$router.push("/");
     },
   },

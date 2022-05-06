@@ -42,17 +42,19 @@ export default {
   mixins: [asyncDataStatus],
   computed: {
     forum() {
-      return findById(this.$store.state.forums, this.id);
+      return findById(this.$store.state.forums.items, this.id);
     },
     threads() {
       if (!this.forum) return [];
       return this.forum.threads.map((threadId) =>
-        this.$store.getters.thread(threadId)
+        this.$store.getters["threads/thread"](threadId)
       );
     },
   },
   methods: {
-    ...mapActions(["fetchForum", "fetchThreads", "fetchUsers"]),
+    ...mapActions("forums", ["fetchForum"]),
+    ...mapActions("threads", ["fetchThreads"]),
+    ...mapActions("users", ["fetchUsers"]),
   },
   async created() {
     const forum = await this.fetchForum({ id: this.id });

@@ -57,7 +57,7 @@ export default {
   methods: {
     async signIn() {
       try {
-        await this.$store.dispatch("signInWithEmailAndPassword", {
+        await this.$store.dispatch("auth/signInWithEmailAndPassword", {
           email: this.form.email,
           password: this.form.password,
         });
@@ -67,7 +67,7 @@ export default {
       }
     },
     async signInWithGoogle() {
-      await this.store.dispatch("signWithGoogle");
+      await this.store.dispatch("auth/signWithGoogle");
       this.successRedirect();
     },
     successRedirect() {
