@@ -14,6 +14,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "@hennge/vue3-pagination": "^1.0.17",
     "core-js": "^3.8.3",
     "firebase": "^9.6.6",
     "firebase-tools": "^10.7.1",
