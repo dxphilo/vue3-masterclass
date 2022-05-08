@@ -7,6 +7,7 @@
       :key="`${$route.path}${JSON.stringify($route.query)}`"
     />
     <AppSpinner v-show="!showPage" />
+    <AppNotification />
   </div>
 </template>
 
@@ -15,12 +16,14 @@ import { mapActions } from "vuex";
 import TheHeader from "@/components/TheHeader.vue";
 import AppSpinner from "@/components/AppSpinner.vue";
 import NProgress from "nprogress";
+import AppNotification from "@/components/AppNotification.vue";
 
 export default {
   name: "App",
   components: {
     TheHeader,
     AppSpinner,
+    AppNotification,
   },
   data() {
     return {

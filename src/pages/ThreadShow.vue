@@ -46,6 +46,8 @@ import PostList from "@/components/PostList.vue";
 import ComentEditor from "@/components/ComentEditor.vue";
 import { mapActions, mapGetters } from "vuex";
 import asyncDataStatus from "@/mixins/AsyncDataStatus";
+import useNotification from "@/composables/useNotifications";
+import difference from "lodash/difference";
 export default {
   name: "ThreadShow",
   components: { PostList, ComentEditor },
@@ -54,6 +56,10 @@ export default {
       required: true,
       type: String,
     },
+  },
+  setup() {
+    const { addNotification } = useNotification();
+    return { addNotification };
   },
   mixins: [asyncDataStatus],
   computed: {
@@ -82,19 +88,26 @@ export default {
       };
       this.createPost(post);
     },
+    async fetchPostsWithUsers(ids) {
+      // fetch the posts
+      const posts = await this.fetchPosts({ ids });
+      // fetch the users associated with the posts
+      const users = posts.map((post) => post.userId).concat(this.thread.userId);
+      await this.fetchUsers({ ids: users });
+    },
   },
   async created() {
-    console.log("Created ...");
     // fetch the thread
-    const thread = await this.fetchThread({ id: this.id });
-    this.fetchUsers({
-      id: thread.userId,
+    const thread = await this.fetchThread({
+      id: this.id,
+      onSnapshot: async ({ isLocal, item, previousItem }) => {
+        if (!this.asyncDataStatus_ready || isLocal) return;
+        const newPosts = difference(item.posts, previousItem.posts);
+        await this.fetchPostsWithUsers(newPosts);
+        this.addNotification({ message: "Thread recently updated" });
+      },
     });
-    const posts = await this.fetchPosts({
-      ids: thread.posts,
-    });
-    const users = posts.map((post) => post.userId).concat(thread.userId);
-    await this.fetchUsers({ ids: users });
+    await this.fetchPostsWithUsers(thread.posts);
     this.asyncDataStatus_fetched();
   },
 };
